@@ -1,0 +1,214 @@
+:root {
+  --main-bg: #000;
+  --glow-color: #00f5ff;
+  --text-color: #ccc;
+}
+
+body {
+  margin: 0;
+  background: var(--main-bg);
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+#bg, .fog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+}
+
+#bg {
+  background: radial-gradient(circle at 50% 50%, #111 0%, var(--main-bg) 80%);
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--glow-color);
+  border-radius: 50%;
+  animation: floatStar 20s linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes floatStar {
+  from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+  to { transform: translateY(-10vh) scale(1.5); opacity: 0.7; }
+}
+
+.fog {
+  background: radial-gradient(circle, rgba(255,255,255,0.02) 20%, transparent 70%),
+              radial-gradient(circle, rgba(255,255,255,0.015) 10%, transparent 60%);
+  animation: fogMove 60s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes fogMove {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 20px); }
+  100% { transform: translate(0, 0); }
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px var(--glow-color);
+  width: 320px;
+  text-align: center;
+  color: var(--glow-color);
+  position: relative;
+  z-index: 1;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid var(--glow-color);
+  background: transparent;
+  color: var(--glow-color);
+  box-shadow: 0 0 8px var(--glow-color);
+}
+
+button {
+  background-color: var(--glow-color);
+  color: var(--main-bg);
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #00e0e6;
+  box-shadow: 0 0 12px var(--glow-color);
+}
+
+a {
+  color: var(--glow-color);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 15px;
+  transition: 0.3s;
+}
+
+a:hover {
+  text-shadow: 0 0 10px var(--glow-color);
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--glow-color);
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 0 12px var(--glow-color);
+}
+
+p {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: #ddd;
+}
+
+.home-button {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, var(--glow-color) 0%, #004b55 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--glow-color);
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.home-button:hover {
+  transform: scale(1.15);
+}
+
+.pulse {
+  color: var(--glow-color);
+  cursor: pointer;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); text-shadow: 0 0 10px var(--glow-color); }
+  50% { transform: scale(1.05); text-shadow: 0 0 20px var(--glow-color); }
+  100% { transform: scale(1); text-shadow: 0 0 10px var(--glow-color); }
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #aee;
+}
+
+textarea {
+  resize: vertical;
+}
+
+header {
+  text-align: center;
+  padding: 40px 20px 20px;
+}
+
+header h1 {
+  color: var(--glow-color);
+  font-size: 2rem;
+  text-shadow: 0 0 10px var(--glow-color);
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0,245,255,0.08);
+}
+
+nav {
+  text-align: center;
+  margin-top: 10px;
+}
+
+nav a {
+  color: var(--glow-color);
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 0 10px;
+}
+
+#controlPanel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 5;
+  color: var(--text-color);
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}

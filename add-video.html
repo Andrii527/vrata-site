@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Добавить Видео — Врата Перепроживания</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="bg"></div>
+  <div class="fog"></div>
+  <header>
+    <h1>Добавить Видео</h1>
+    <nav>
+      <a href="video.html">← Назад к видео</a>
+    </nav>
+  </header>
+  <div class="form-container">
+    <form>
+      <label for="title">Название видео</label>
+      <input type="text" id="title" name="title" placeholder="Поток тишины..." required>
+
+      <label for="description">Описание</label>
+      <textarea id="description" name="description" rows="4" placeholder="О чём это видео, ощущение, направление..."></textarea>
+
+      <label for="file">Файл видео</label>
+      <input type="file" id="file" name="file" accept="video/*" required>
+
+      <button type="submit">Загрузить</button>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

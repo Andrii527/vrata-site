@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Конструктор сайта</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>🛠 Конструктор сайта</header>
+  <main>
+    <div class="sidebar">
+      <button onclick="addBlock('text')">Текст</button>
+      <button onclick="addBlock('image')">Изображение</button>
+      <button onclick="addBlock('video')">Видео</button>
+      <button onclick="addBlock('button')">Кнопка</button>
+      <button onclick="addBlock('link')">Ссылка</button>
+      <button onclick="generateCode()">Сохранить</button>
+    </div>
+    <div class="editor" id="editor"></div>
+  </main>
+  <script>
+    function addBlock(type) {
+      const editor = document.getElementById('editor');
+      const block = document.createElement('div');
+      block.className = 'block';
+      if (type === 'text') {
+        block.innerHTML = '<label>Текст:</label><textarea rows="4"></textarea>';
+      } else if (type === 'image') {
+        block.innerHTML = '<label>URL изображения:</label><input type="text">';
+      } else if (type === 'video') {
+        block.innerHTML = '<label>URL видео (YouTube):</label><input type="text">';
+      } else if (type === 'button') {
+        block.innerHTML = '<label>Текст кнопки:</label><input type="text"><br><label>Ссылка:</label><input type="text">';
+      } else if (type === 'link') {
+        block.innerHTML = '<label>Текст ссылки:</label><input type="text"><br><label>URL:</label><input type="text"><br><label>Открыть в новой вкладке: <input type="checkbox"></label>';
+      }
+      editor.appendChild(block);
+    }
+
+    function generateCode() {
+      const blocks = document.querySelectorAll('.block');
+      let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Моя страница</title></head><body style
