@@ -113,6 +113,16 @@
       pointer-events: none;
     }
 
+    /* Добавляем лёгкое колебание для сфер */
+    @keyframes sphereFloat {
+      0%, 100% {
+        transform: translateY(-10px);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
     .sun, .planet {
       position: absolute;
       background: var(--glow-color);
@@ -122,6 +132,8 @@
       transition: transform 0.3s, box-shadow 0.3s, top 1s ease, left 1s ease, right 1s ease, bottom 1s ease;
       display: none;
       z-index: 3;
+      /* Применяем анимацию для эффекта плавного покачивания */
+      animation: sphereFloat 2.5s ease-in-out infinite alternate;
     }
     .sun:hover, .planet:hover {
       transform: scale(1.1);
