@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Космический стиль - Улучшенный</title>
+  <title>Космический стиль - Улучшенный 3D</title>
   <style>
     :root {
       --main-bg: #000;
@@ -16,7 +16,7 @@
       background: #000;
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
-      transition: opacity 1.5s ease; /* Плавность для появления/исчезания */
+      transition: opacity 1.5s ease;
     }
 
     #bg {
@@ -113,16 +113,7 @@
       pointer-events: none;
     }
 
-    /* Добавляем лёгкое колебание для сфер */
-    @keyframes sphereFloat {
-      0%, 100% {
-        transform: translateY(-10px);
-      }
-      50% {
-        transform: translateY(10px);
-      }
-    }
-
+    /* Добавление 3D-анимации к сферам */
     .sun, .planet {
       position: absolute;
       background: var(--glow-color);
@@ -132,12 +123,28 @@
       transition: transform 0.3s, box-shadow 0.3s, top 1s ease, left 1s ease, right 1s ease, bottom 1s ease;
       display: none;
       z-index: 3;
-      /* Применяем анимацию для эффекта плавного покачивания */
-      animation: sphereFloat 2.5s ease-in-out infinite alternate;
+
+      /* 3D */
+      transform-style: preserve-3d;
+      animation: rotate3D 8s linear infinite;
     }
+
     .sun:hover, .planet:hover {
-      transform: scale(1.1);
+      transform: scale(1.1) rotateY(30deg);
       box-shadow: 0 0 40px var(--glow-color);
+    }
+
+    /* Анимация вращения в 3D */
+    @keyframes rotate3D {
+      0% {
+        transform: rotateY(0deg) rotateX(0deg);
+      }
+      50% {
+        transform: rotateY(180deg) rotateX(180deg);
+      }
+      100% {
+        transform: rotateY(360deg) rotateX(360deg);
+      }
     }
 
     .sun::after, .planet::after {
@@ -287,7 +294,7 @@
       canvas.height = window.innerHeight;
     });
 
-    // Дополнительное плавное затемнение/снятие затемнения фона
+    // Дополнительное плавное затемнение фона
     window.addEventListener('mouseover', () => {
       bg.style.filter = 'brightness(1.2)';
     });
