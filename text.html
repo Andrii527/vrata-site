@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тексты — Врата Перепроживания</title>
+  <style>
+    :root {
+      --main-bg: #000;
+      --glow-color: #00f5ff;
+      --text-color: #ccc;
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    #bg, .fog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+    }
+
+    #bg {
+      background: radial-gradient(circle at 50% 50%, #111 0%, #000 80%);
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #00f5ff;
+      border-radius: 50%;
+      animation: floatStar 20s linear infinite;
+    }
+
+    @keyframes floatStar {
+      from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      to { transform: translateY(-10vh) scale(1.5); opacity: 0.7; }
+    }
+
+    .fog {
+      background: radial-gradient(circle, rgba(255,255,255,0.02) 20%, transparent 70%),
+                  radial-gradient(circle, rgba(255,255,255,0.015) 10%, transparent 60%);
+      animation: fogMove 60s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes fogMove {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, 20px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 120px auto;
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 245, 255, 0.2);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0,245,255,0.05);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #00f5ff;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 12px #00f5ff;
+    }
+
+    .text-block {
+      margin-bottom: 40px;
+    }
+
+    .text-block h2 {
+      color: #aef;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .text-block p {
+      line-height: 1.8;
+      font-size: 1.05rem;
+      color: #ddd;
+    }
+      .home-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, #00f5ff 0%, #004b55 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 15px #00f5ff;
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+
+    .home-button:hover {
+      transform: scale(1.15);
+    }
+
+    .add-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, #00f5ff 0%, #004b55 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 15px #00f5ff;
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .add-button:hover {
+      transform: scale(1.15);
+    }
+
+</style>
+</head>
+<body>
+  <div id="bg"></div>
+  <div class="fog"></div>
+  <script>
+    const bg = document.getElementById('bg');
+    for (let i = 0; i < 80; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.top = Math.random() * 100 + 'vh';
+      star.style.animationDuration = (10 + Math.random() * 20) + 's';
+      bg.appendChild(star);
+    }
+  </script>
+
+  <div class="container">
+    <h1>Потоки текста</h1>
+
+    <div class="text-block">
+      <h2>Фрагмент 1: Точка вне координат</h2>
+      <p>
+        Он шагнул в пространство, не содержащее направления. Оно не было пустым — оно было доформенным. Здесь слова не описывают — они колеблются. Ты читаешь — и исчезаешь между строк.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h2>Фрагмент 2: Перепроживание</h2>
+      <p>
+        Состояние не повторяется. Оно проживается иначе, сквозь другую грань. Мы не возвращаемся — мы раскрываемся во вспышке узнавания того, что всегда было.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h2>Фрагмент 3: Восприятие как форма</h2>
+      <p>
+        Мир не внешний. Он не отделён от тебя. То, что ты переживаешь, не приходит к тебе — это ты в моменте встречаешь самого себя.
+      </p>
+    </div>
+
+  </div>
+  <a href="index.html" class="home-button" title="На главную"></a>
+  <a href="index.html" class="home-button" title="На главную"></a>
+
+</body>
+</html>
