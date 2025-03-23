@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Конструктор сайта</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0a0a0a;
+      color: #00f5ff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #111;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 20px;
+      box-shadow: 0 0 10px #00f5ff;
+    }
+    main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 200px;
+      background: #151515;
+      padding: 10px;
+      box-shadow: 2px 0 10px rgba(0, 245, 255, 0.3);
+    }
+    .sidebar button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #00f5ff;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .editor {
+      flex: 1;
+      background: #1a1a1a;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .block {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #222;
+      border: 1px solid #00f5ff;
+      border-radius: 5px;
+    }
+    .block input,
+    .block textarea {
+      width: 100%;
+      background: #111;
+      color: #00f5ff;
+      border: 1px solid #00f5ff;
+      padding: 5px;
+      margin-top: 5px;
+    }
+    .preview {
+      margin-top: 20px;
+      padding: 10px;
+      background: #000;
+      border: 1px dashed #00f5ff;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>🛠 Конструктор сайта</header>
+  <main>
+    <div class="sidebar">
+      <button onclick="addBlock('text')">Текст</button>
+      <button onclick="addBlock('image')">Изображение</button>
+      <button onclick="addBlock('video')">Видео</button>
+      <button onclick="addBlock('button')">Кнопка</button>
+      <button onclick="addBlock('link')">Ссылка</button>
+      <button onclick="generateCode()">Сохранить</button>
+    </div>
+    <div class="editor" id="editor"></div>
+  </main>
+  <script>
+    function addBlock(type) {
+      const editor = document.getElementById('editor');
+      const block = document.createElement('div');
+      block.className = 'block';
+      if (type === 'text') {
+        block.innerHTML = '<label>Текст:</label><textarea rows="4"></textarea>';
+      } else if (type === 'image') {
+        block.innerHTML = '<label>URL изображения:</label><input type="text">';
+      } else if (type === 'video') {
+        block.innerHTML = '<label>URL видео (YouTube):</label><input type="text">';
+      } else if (type === 'button') {
+        block.innerHTML = '<label>Текст кнопки:</label><input type="text"><br><label>Ссылка:</label><input type="text">';
+      } else if (type === 'link') {
+        block.innerHTML = '<label>Текст ссылки:</label><input type="text"><br><label>URL:</label><input type="text"><br><label>Открыть в новой вкладке: <input type="checkbox"></label>';
+      }
+      editor.appendChild(block);
+    }
+
+    function generateCode() {
+      const blocks = document.querySelectorAll('.block');
+      let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Моя страница</title></head><body style="background:black; color:white; font-family:sans-serif;">';
+      blocks.forEach(block => {
+        if (block.querySelector('textarea')) {
+          html += `<p>${block.querySelector('textarea').value}</p>`;
+        } else if (block.querySelectorAll('input').length === 1 && block.innerHTML.includes('URL изображения')) {
+          const val = block.querySelector('input').value;
+          html += `<img src="${val}" style="max-width:100%;">`;
+        } else if (block.querySelectorAll('input').length === 1 && block.innerHTML.includes('URL видео')) {
+          const val = block.querySelector('input').value;
+          html += `<iframe width="560" height="315" src="${val}" frameborder="0" allowfullscreen></iframe>`;
+        } else if (block.innerHTML.includes('Текст кнопки:')) {
+          const txt = block.querySelectorAll('input')[0].value;
+          const url = block.querySelectorAll('input')[1].value;
+          html += `<button onclick=\"location.href='${url}'\">${txt}</button>`;
+        } else if (block.innerHTML.includes('Текст ссылки:')) {
+          const txt = block.querySelectorAll('input')[0].value;
+          const url = block.querySelectorAll('input')[1].value;
+          const target = block.querySelectorAll('input')[2].checked ? ' target="_blank"' : '';
+          html += `<a href=\"${url}\"${target} style=\"color:#00f5ff\">${txt}</a>`;
+        }
+      });
+      html += '</body></html>';
+      const win = window.open();
+      win.document.write(html);
+    }
+  </script>
+</body>
+</html>

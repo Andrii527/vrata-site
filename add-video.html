@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Добавить Видео — Врата Перепроживания</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, #111 0%, #000 80%);
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #00f5ff;
+      border-radius: 50%;
+      animation: floatStar 20s linear infinite;
+    }
+
+    @keyframes floatStar {
+      from {
+        transform: translateY(100vh) scale(0.5) rotate(0deg);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(-10vh) scale(1.5) rotate(360deg);
+        opacity: 0.7;
+      }
+    }
+
+    .fog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(255,255,255,0.02) 20%, transparent 70%),
+                  radial-gradient(circle, rgba(255,255,255,0.015) 10%, transparent 60%);
+      z-index: -2;
+      animation: fogMove 60s ease-in-out infinite;
+    }
+
+    @keyframes fogMove {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, 20px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    header h1 {
+      color: #00f5ff;
+      font-size: 2rem;
+      text-shadow: 0 0 10px #00f5ff;
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 30px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0,245,255,0.08);
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #aee;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      background: #111;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 6px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: #00f5ff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0,245,255,0.2);
+    }
+
+    nav {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: #00f5ff;
+      text-decoration: none;
+      font-size: 1rem;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="bg"></div>
+  <div class="fog"></div>
+  <script>
+    const bg = document.getElementById('bg');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.top = Math.random() * 100 + 'vh';
+      star.style.animationDuration = (10 + Math.random() * 20) + 's';
+      star.style.transform = `rotate(${Math.random() * 360}deg)`;
+      bg.appendChild(star);
+    }
+  </script>
+
+  <header>
+    <h1>Добавить Видео</h1>
+    <nav>
+      <a href="video.html">← Назад к видео</a>
+    </nav>
+  </header>
+
+  <div class="form-container">
+    <form>
+      <label for="title">Название видео</label>
+      <input type="text" id="title" name="title" placeholder="Поток тишины..." required>
+
+      <label for="description">Описание</label>
+      <textarea id="description" name="description" rows="4" placeholder="О чём это видео, ощущение, направление..."></textarea>
+
+      <label for="file">Файл видео</label>
+      <input type="file" id="file" name="file" accept="video/*" required>
+
+      <button type="submit">Загрузить</button>
+    </form>
+  </div>
+</body>
+</html>

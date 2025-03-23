@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dev Panel — Врата</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      color: #00f5ff;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      text-shadow: 0 0 12px #00f5ff;
+    }
+    #auth {
+      text-align: center;
+      margin-top: 100px;
+    }
+    input[type="password"] {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 0;
+      font-size: 1rem;
+      background: #00f5ff;
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      cursor: pointer;
+    }
+    #panel {
+      display: none;
+      margin-top: 50px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #aaa;
+    }
+    textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 15px;
+      background: #111;
+      color: #00f5ff;
+    }
+    #output-container {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+    }
+    .copied {
+      color: #0f0;
+      margin-left: 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛠️ Панель Разработчика</h1>
+
+  <div id="auth">
+    <p>Для доступа введите код:</p>
+    <input type="password" id="passcode" placeholder="Код доступа" />
+    <button onclick="checkAccess()">Войти</button>
+  </div>
+
+  <div id="panel">
+    <div class="section">
+      <h2>➕ Создать блок</h2>
+
+      <label for="page">Выбери страницу:</label>
+      <select id="page">
+        <option value="index.html">Главная</option>
+        <option value="about.html">О проекте</option>
+        <option value="video.html">Видео</option>
+        <option value="text.html">Тексты</option>
+        <option value="add-video.html">Добавить видео</option>
+      </select>
+
+      <label for="element">Тип элемента:</label>
+      <select id="element">
+        <option value="text">Текст</option>
+        <option value="video">Видео</option>
+        <option value="button">Кнопка</option>
+      </select>
+
+      <label for="content">Содержимое (текст, URL или ссылка):</label>
+      <textarea id="content" rows="4"></textarea>
+
+      <button onclick="generate()">Сгенерировать</button>
+      <button onclick="copyCode()">📋 Копировать</button><span id="copyStatus" class="copied"></span>
+
+      <pre id="output-container"></pre>
+    </div>
+  </div>
+
+  <script>
+    function checkAccess() {
+      const code = document.getElementById('passcode').value;
+      if (code === '1993') {
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('panel').style.display = 'block';
+      } else {
+        alert('Неверный код');
+      }
+    }
+
+    function generate() {
+      const page = document.getElementById('page').value;
+      const type = document.getElementById('element').value;
+      const content = document.getElementById('content').value;
+      let html = '';
+
+      if (type === 'text') {
+        html = `<p>${content}</p>`;
+      } else if (type === 'video') {
+        html = `<video src="${content}" controls style="width:100%; max-width:600px;"></video>`;
+      } else if (type === 'button') {
+        html = `<a href="${content}" class="button" style="display:inline-block; padding:10px 20px; background:#00f5ff; color:#000; border-radius:5px; text-decoration:none;">Перейти</a>`;
+      }
+
+      const result = `// Вставьте на страницу ${page}\n${html}`;
+      document.getElementById('output-container').textContent = result;
+      document.getElementById('copyStatus').textContent = '';
+    }
+
+    function copyCode() {
+      const code = document.getElementById('output-container').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        document.getElementById('copyStatus').textContent = 'Скопировано';
+        setTimeout(() => {
+          document.getElementById('copyStatus').textContent = '';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
