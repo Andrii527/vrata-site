@@ -9,6 +9,8 @@
       --main-bg: #000;
       --glow-color: #00f5ff;
       --text-color: #ccc;
+      /* Можно настроить цвет "света" для 3D-эффекта */
+      --sphere-light-color: #ffffff;
     }
 
     body {
@@ -17,7 +19,7 @@
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
       transition: opacity 1.5s ease;
-      /* Добавляем перспективу для 3D */
+      /* Перспектива для 3D */
       perspective: 1000px;
     }
 
@@ -119,19 +121,25 @@
     /* 3D анимация spheres */
     .sun, .planet {
       position: absolute;
-      background: var(--glow-color);
       border-radius: 50%;
-      box-shadow: 0 0 20px var(--glow-color);
       cursor: pointer;
       display: none;
       z-index: 3;
       transition: transform 0.3s, box-shadow 0.3s, top 1s, left 1s, right 1s, bottom 1s;
-      /* 3D transform style */
       transform-style: preserve-3d;
       animation: revolve 10s linear infinite;
+      /* Сформируем градиент для имитации 3D:
+         - темнее по краям,
+         - светлее сверху слева (или справа). */
+      background: radial-gradient(
+        circle at 30% 30%,
+        var(--sphere-light-color),
+        var(--glow-color) 45%,
+        #000 90%
+      );
+      box-shadow: 0 0 20px var(--glow-color);
     }
-
-    /* Ключевые кадры для вращения вокруг оси */
+    /* Ключевые кадры для вращения */
     @keyframes revolve {
       0% {
         transform: rotateY(0deg) rotateX(0deg);
@@ -145,7 +153,7 @@
     }
 
     .sun:hover, .planet:hover {
-      transform: scale(1.1) rotateY(30deg) rotateX(5deg);
+      transform: scale(1.1) rotateY(30deg) rotateX(10deg);
       box-shadow: 0 0 40px var(--glow-color), inset 0 0 10px #003333;
     }
 
@@ -192,8 +200,10 @@
   <div class="wave"></div>
   <div class="wave"></div>
   <div class="wave"></div>
+
   <div id="centralSphere"></div>
 
+  <!-- Примеры 3D-шариков (Links) -->
   <a href="about.html" class="sun" data-label="О проекте" style="top: 20%; left: 20%; width: 120px; height: 120px;"></a>
   <a href="text.html" class="sun" data-label="Тексты" style="top: 25%; right: 25%; width: 120px; height: 120px;"></a>
   <a href="video.html" class="sun" data-label="Видео" style="bottom: 25%; left: 40%; width: 120px; height: 120px;"></a>
