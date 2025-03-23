@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Космический стиль - Улучшенный 3D</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Космический стиль - 3D улучшенный</title>
   <style>
     :root {
       --main-bg: #000;
@@ -17,6 +17,8 @@
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
       transition: opacity 1.5s ease;
+      /* Добавляем перспективу для 3D */
+      perspective: 1000px;
     }
 
     #bg {
@@ -98,6 +100,7 @@
       backdrop-filter: blur(10px);
       transition: transform 0.3s, box-shadow 0.3s;
     }
+
     #centralSphere:hover {
       transform: translate(-50%, -50%) scale(1.05);
       box-shadow: 0 0 60px rgba(0,245,255,0.6);
@@ -113,29 +116,23 @@
       pointer-events: none;
     }
 
-    /* Добавление 3D-анимации к сферам */
+    /* 3D анимация spheres */
     .sun, .planet {
       position: absolute;
       background: var(--glow-color);
       border-radius: 50%;
       box-shadow: 0 0 20px var(--glow-color);
       cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s, top 1s ease, left 1s ease, right 1s ease, bottom 1s ease;
       display: none;
       z-index: 3;
-
-      /* 3D */
+      transition: transform 0.3s, box-shadow 0.3s, top 1s, left 1s, right 1s, bottom 1s;
+      /* 3D transform style */
       transform-style: preserve-3d;
-      animation: rotate3D 8s linear infinite;
+      animation: revolve 10s linear infinite;
     }
 
-    .sun:hover, .planet:hover {
-      transform: scale(1.1) rotateY(30deg);
-      box-shadow: 0 0 40px var(--glow-color);
-    }
-
-    /* Анимация вращения в 3D */
-    @keyframes rotate3D {
+    /* Ключевые кадры для вращения вокруг оси */
+    @keyframes revolve {
       0% {
         transform: rotateY(0deg) rotateX(0deg);
       }
@@ -145,6 +142,11 @@
       100% {
         transform: rotateY(360deg) rotateX(360deg);
       }
+    }
+
+    .sun:hover, .planet:hover {
+      transform: scale(1.1) rotateY(30deg) rotateX(5deg);
+      box-shadow: 0 0 40px var(--glow-color), inset 0 0 10px #003333;
     }
 
     .sun::after, .planet::after {
@@ -164,6 +166,7 @@
       white-space: nowrap;
       text-shadow: 0 0 4px #00f5ff33;
     }
+
     .sun:hover::after, .planet:hover::after {
       opacity: 1;
     }
