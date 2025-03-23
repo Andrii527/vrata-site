@@ -1,0 +1,147 @@
+:root {
+  --main-bg: #000;
+  --glow-color: #00f5ff;
+  --text-color: #ccc;
+}
+
+body {
+  margin: 0;
+  background: var(--main-bg);
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-color);
+}
+
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #111 0%, var(--main-bg) 80%);
+  z-index: -2;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--glow-color);
+  border-radius: 50%;
+  animation: floatStar linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes floatStar {
+  from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+  to { transform: translateY(-10vh) scale(1.5); opacity: 0.7; }
+}
+
+.wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0,245,255,0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: waveExpand 6s infinite ease-out;
+  opacity: 0.2;
+  filter: blur(4px);
+  will-change: width, height, opacity;
+}
+
+.wave:nth-child(1) { animation-delay: 0s; }
+.wave:nth-child(2) { animation-delay: 2s; }
+.wave:nth-child(3) { animation-delay: 4s; }
+
+@keyframes waveExpand {
+  0% {
+    width: 40px;
+    height: 40px;
+    opacity: 0.2;
+  }
+  100% {
+    width: 600px;
+    height: 600px;
+    opacity: 0;
+  }
+}
+
+#centralSphere {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  background: rgba(0,245,255,0.2);
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0,245,255,0.4);
+  z-index: 10;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sun, .planet {
+  position: absolute;
+  background: var(--glow-color);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--glow-color);
+  cursor: pointer;
+  transition: transform 0.3s;
+  display: none;
+  z-index: 3;
+}
+.sun:hover, .planet:hover {
+  transform: scale(1.1);
+}
+
+.sun::after, .planet::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  background: rgba(0, 245, 255, 0.05);
+  color: var(--glow-color);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  text-shadow: 0 0 4px #00f5ff33;
+}
+
+.sun:hover::after, .planet:hover::after {
+  opacity: 1;
+}
+
+#controlPanel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 5;
+  color: var(--text-color);
+}
+
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 768px) {
+  #controlPanel {
+    bottom: 10px;
+    left: 10px;
+  }
+}
