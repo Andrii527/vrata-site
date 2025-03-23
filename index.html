@@ -13,9 +13,10 @@
 
     body {
       margin: 0;
-      background: #000;
+      background: var(--main-bg);
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
+      color: var(--text-color);
     }
 
     #bg {
@@ -24,7 +25,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at 50% 50%, #111 0%, #000 80%);
+      background: radial-gradient(circle at 50% 50%, #111 0%, var(--main-bg) 80%);
       z-index: -2;
     }
 
@@ -32,7 +33,7 @@
       position: absolute;
       width: 2px;
       height: 2px;
-      background: #00f5ff;
+      background: var(--glow-color);
       border-radius: 50%;
       animation: floatStar linear infinite;
     }
@@ -100,9 +101,9 @@
 
     .sun, .planet {
       position: absolute;
-      background: #00f5ff;
+      background: var(--glow-color);
       border-radius: 50%;
-      box-shadow: 0 0 20px #00f5ff;
+      box-shadow: 0 0 20px var(--glow-color);
       cursor: pointer;
       transition: transform 0.3s;
       display: none;
@@ -119,7 +120,7 @@
       left: 50%;
       transform: translate(-50%, 10px);
       background: rgba(0, 245, 255, 0.05);
-      color: #00f5ff;
+      color: var(--glow-color);
       font-size: 12px;
       padding: 4px 8px;
       border-radius: 8px;
@@ -139,7 +140,15 @@
       bottom: 20px;
       left: 20px;
       z-index: 5;
-      color: #fff;
+      color: var(--text-color);
+    }
+
+    /* Медиазапросы для мобильных устройств */
+    @media (max-width: 768px) {
+      #controlPanel {
+        bottom: 10px;
+        left: 10px;
+      }
     }
   </style>
 </head>
@@ -171,16 +180,20 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Звезды
-    const bg = document.getElementById('bg');
-    for (let i = 0; i < 80; i++) {
-      const star = document.createElement('div');
-      star.classList.add('star');
-      star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = Math.random() * 100 + 'vh';
-      star.style.animationDuration = (10 + Math.random() * 20) + 's';
-      bg.appendChild(star);
+    // Функция для создания звезд
+    function createStars() {
+      const bg = document.getElementById('bg');
+      for (let i = 0; i < 80; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.animationDuration = (10 + Math.random() * 20) + 's';
+        bg.appendChild(star);
+      }
     }
+
+    createStars();
 
     let showMain = false;
 
@@ -198,7 +211,7 @@
 
       const points = [...spheres].map(s => {
         const rect = s.getBoundingClientRect();
-        return [rect.left + rect.width/2, rect.top + rect.height/2];
+        return [rect.left + rect.width / 2, rect.top + rect.height / 2];
       });
 
       const t = Date.now() / 1000;
