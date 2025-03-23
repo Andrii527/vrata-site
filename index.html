@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Космический стиль</title>
+  <title>Космический стиль - Улучшенный</title>
   <style>
     :root {
       --main-bg: #000;
@@ -16,6 +16,7 @@
       background: #000;
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
+      transition: opacity 1.5s ease; /* Плавность для появления/исчезания */
     }
 
     #bg {
@@ -26,20 +27,28 @@
       height: 100vh;
       background: radial-gradient(circle at 50% 50%, #111 0%, #000 80%);
       z-index: -2;
+      transition: filter 2s ease;
     }
 
     .star {
       position: absolute;
       width: 2px;
       height: 2px;
-      background: #00f5ff;
+      background: var(--glow-color);
       border-radius: 50%;
       animation: floatStar linear infinite;
+      opacity: 0.7;
     }
 
     @keyframes floatStar {
-      from { transform: translateY(100vh) scale(0.5); opacity: 0; }
-      to { transform: translateY(-10vh) scale(1.5); opacity: 0.7; }
+      from {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0.7;
+      }
     }
 
     .wave {
@@ -54,6 +63,7 @@
       animation: waveExpand 6s infinite ease-out;
       opacity: 0.2;
       filter: blur(4px);
+      transition: opacity 1s ease;
     }
 
     .wave:nth-child(1) { animation-delay: 0s; }
@@ -86,6 +96,11 @@
       z-index: 10;
       cursor: pointer;
       backdrop-filter: blur(10px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    #centralSphere:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+      box-shadow: 0 0 60px rgba(0,245,255,0.6);
     }
 
     #canvas {
@@ -100,16 +115,17 @@
 
     .sun, .planet {
       position: absolute;
-      background: #00f5ff;
+      background: var(--glow-color);
       border-radius: 50%;
-      box-shadow: 0 0 20px #00f5ff;
+      box-shadow: 0 0 20px var(--glow-color);
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s, top 1s ease, left 1s ease, right 1s ease, bottom 1s ease;
       display: none;
       z-index: 3;
     }
     .sun:hover, .planet:hover {
       transform: scale(1.1);
+      box-shadow: 0 0 40px var(--glow-color);
     }
 
     .sun::after, .planet::after {
@@ -119,7 +135,7 @@
       left: 50%;
       transform: translate(-50%, 10px);
       background: rgba(0, 245, 255, 0.05);
-      color: #00f5ff;
+      color: var(--glow-color);
       font-size: 12px;
       padding: 4px 8px;
       border-radius: 8px;
@@ -129,7 +145,6 @@
       white-space: nowrap;
       text-shadow: 0 0 4px #00f5ff33;
     }
-
     .sun:hover::after, .planet:hover::after {
       opacity: 1;
     }
@@ -140,6 +155,11 @@
       left: 20px;
       z-index: 5;
       color: #fff;
+      background: rgba(0,0,0,0.5);
+      padding: 10px;
+      border-radius: 8px;
+      backdrop-filter: blur(4px);
+      transition: opacity 0.5s ease;
     }
   </style>
 </head>
@@ -168,11 +188,13 @@
     const waves = document.querySelectorAll('.wave');
     const spheres = document.querySelectorAll('.sun, .planet');
     const sizeRange = document.getElementById('sizeRange');
+    const bg = document.getElementById('bg');
+    let showMain = false;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Звезды
-    const bg = document.getElementById('bg');
+    // Создание звёзд
     for (let i = 0; i < 80; i++) {
       const star = document.createElement('div');
       star.classList.add('star');
@@ -182,25 +204,29 @@
       bg.appendChild(star);
     }
 
-    let showMain = false;
-
+    // Проверяем, заходил ли пользователь ранее
     if (localStorage.getItem("entered") === "true") {
       document.body.style.opacity = '1';
-      document.getElementById('centralSphere').style.display = 'none';
-      document.querySelectorAll('.wave').forEach(w => w.style.display = 'none');
-      document.querySelectorAll('.sun, .planet').forEach(s => s.style.display = 'block');
+      centralSphere.style.display = 'none';
+      waves.forEach(w => w.style.display = 'none');
+      spheres.forEach(s => s.style.display = 'block');
       showMain = true;
     }
 
+    // Анимация рисования линий
     function drawLine() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (!showMain) return requestAnimationFrame(drawLine);
+      if (!showMain) {
+        requestAnimationFrame(drawLine);
+        return;
+      }
 
       const points = [...spheres].map(s => {
         const rect = s.getBoundingClientRect();
-        return [rect.left + rect.width/2, rect.top + rect.height/2];
+        return [rect.left + rect.width / 2, rect.top + rect.height / 2];
       });
 
+      // Плавная анимация соединяющей линии
       const t = Date.now() / 1000;
       const index = Math.floor(t) % points.length;
       const next = (index + 1) % points.length;
@@ -220,16 +246,15 @@
 
       requestAnimationFrame(drawLine);
     }
-
     drawLine();
 
+    // Клик по центральной сфере
     centralSphere.addEventListener('click', () => {
       localStorage.setItem("entered", "true");
-      document.body.style.transition = 'opacity 1.5s ease';
-      document.body.style.opacity = '0';
+      document.body.style.opacity = '0'; // Исчезновение
 
       setTimeout(() => {
-        document.body.style.opacity = '1';
+        document.body.style.opacity = '1'; // Появление
         centralSphere.style.display = 'none';
         waves.forEach(w => w.style.display = 'none');
         spheres.forEach(s => s.style.display = 'block');
@@ -237,15 +262,25 @@
       }, 1500);
     });
 
+    // Изменение размера сфер
     sizeRange.addEventListener('input', (e) => {
       spheres.forEach(sphere => {
         sphere.style.width = sphere.style.height = e.target.value + 'px';
       });
     });
 
+    // Адаптация канваса при изменении размера окна
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+    });
+
+    // Дополнительное плавное затемнение/снятие затемнения фона
+    window.addEventListener('mouseover', () => {
+      bg.style.filter = 'brightness(1.2)';
+    });
+    window.addEventListener('mouseout', () => {
+      bg.style.filter = 'brightness(1)';
     });
   </script>
 </body>
